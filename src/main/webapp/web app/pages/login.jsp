@@ -4,10 +4,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Register Here</title>
+<title>Login</title>
 </head>
 <body>
 <%@ include file="projectHeader.html" %>
+	<form action="home.jsp" method="POST">
+		
+	</form>
 <%@ include file="projectFooter.html" %>
 </body>
 </html>

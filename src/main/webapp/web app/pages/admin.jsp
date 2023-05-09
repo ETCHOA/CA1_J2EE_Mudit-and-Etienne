@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Admin</title>
 </head>
 <body>
-
+<%@ include file="projectHeader.html" %>
+<%@ include file="projectFooter.html" %>
 </body>
 </html>
