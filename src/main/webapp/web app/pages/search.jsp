@@ -16,6 +16,7 @@ if(catStr == null){
 }
 
 // ArrrayLists of data
+ArrayList<Integer> ids = new ArrayList<>();
 ArrayList<String> titles = new ArrayList<>();
 ArrayList<Double> prices = new ArrayList<>();
 ArrayList<Double> ratings = new ArrayList<>();
@@ -38,16 +39,16 @@ try {
 	// SQL statement (take first 200 datasets)
 	String sqlStr = "";
 	if(searchStr == null && catStr.equals("none")){
-		sqlStr = "SELECT title,price,rating,genre FROM books limit 0, 199";
+		sqlStr = "SELECT id,title,price,rating,genre FROM books limit 0, 199";
 	} else 	{
 		if(catStr.equals("")){
-			sqlStr = "SELECT title,price,rating,genre FROM books limit 0, 199";
+			sqlStr = "SELECT id,title,price,rating,genre FROM books limit 0, 199";
 		}else if(catStr.equals("none")){
-			sqlStr = "SELECT title,price,rating,genre FROM books where title LIKE ? LIMIT 0,199";
+			sqlStr = "SELECT id,title,price,rating,genre FROM books where title LIKE ? LIMIT 0,199";
 		} else if (searchStr == null) {
-			sqlStr = "SELECT title,price,rating,genre FROM books where genre=? LIMIT 0,199";
+			sqlStr = "SELECT id,title,price,rating,genre FROM books where genre=? LIMIT 0,199";
 		} else {
-			sqlStr = "SELECT title,price,rating,genre FROM books where title LIKE ? and genre=? LIMIT 0,199 ";
+			sqlStr = "SELECT id,title,price,rating,genre FROM books where title LIKE ? and genre=? LIMIT 0,199 ";
 		}
 				
 	}
@@ -68,17 +69,19 @@ try {
 		}
 	
 	}
-	out.print(ps);
+
 	
 	
 	ResultSet resultSet = ps.executeQuery();
 
 	while(resultSet.next()){
+		Integer id = resultSet.getInt("id");
 		String title = resultSet.getString("title");
 		double price = resultSet.getDouble("price");
 		double rating = resultSet.getDouble("rating");
 		String genre = resultSet.getString("genre");
 
+		ids.add(id);
 		titles.add(title);
 		prices.add(price);
 		ratings.add(rating);
@@ -135,20 +138,22 @@ try {
 		for(int i=0;i<secondLimit;i++){
 			%>
 			<td style="width:25%">
-			<div>
-				<div style="display:flex;flex-direction:row;justify-content:center;">
-					<h3>title</h3><p style="justify-content:center;font-size:1.2em"> : <%=titles.get((b*8)+i) %></p>
+			<a href="details.jsp?id=<%=ids.get((b*8)+i) %>" style="text-decoration:none">
+				<div>
+					<div style="display:flex;flex-direction:row;justify-content:center;">
+						<h3 style="text-decoration:none">title</h3><p style="justify-content:center;font-size:1.2em"> : <%=titles.get((b*8)+i) %></p>
+					</div>
+					<div style="display:flex;flex-direction:row;justify-content:center;">
+						<h3>price</h3><p style="justify-content:center;font-size:1.2em"> : <%=prices.get((b*8)+i) %></p>
+					</div>
+					<div style="display:flex;flex-direction:row;justify-content:center;">
+						<h3>rating</h3><p style="justify-content:center;font-size:1.2em"> : <%=ratings.get((b*8)+i) %></p>
+					</div>
+					<div style="display:flex;flex-direction:row;justify-content:center;">
+						<h3>genre</h3><p style="justify-content:center;font-size:1.2em"> : <%=genres.get((b*8)+i) %></p>
+					</div>
 				</div>
-				<div style="display:flex;flex-direction:row;justify-content:center;">
-					<h3>price</h3><p style="justify-content:center;font-size:1.2em"> : <%=prices.get((b*8)+i) %></p>
-				</div>
-				<div style="display:flex;flex-direction:row;justify-content:center;">
-					<h3>rating</h3><p style="justify-content:center;font-size:1.2em"> : <%=ratings.get((b*8)+i) %></p>
-				</div>
-				<div style="display:flex;flex-direction:row;justify-content:center;">
-					<h3>genre</h3><p style="justify-content:center;font-size:1.2em"> : <%=genres.get((b*8)+i) %></p>
-				</div>
-			</div>
+				</a>
 			</td>
 			<%
 		}
