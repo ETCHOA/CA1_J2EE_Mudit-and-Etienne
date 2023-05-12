@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
     database: "bookstore"
 });
 
-/*
+
 
 // Generate and insert 5000 random data sets
 for (let i = 0; i < 5000; i++) {
@@ -20,7 +20,17 @@ for (let i = 0; i < 5000; i++) {
   const quantity = faker.random.number({ min: 1, max: 100 });
   const publisher = faker.company.companyName();
   const publication_date = faker.date.past().toISOString().substring(0, 10);
-  const isbn = faker.random.alphaNumeric(10);
+  const EAN = 978;
+  const grp = faker.random.number({ min : 10, max :99})
+  const reg = faker.random.number({ min : 10000, max : 99999 })
+  const pub = faker.random.number({ min : 10 , max : 99})
+  const plain = EAN + "" + grp + "" + reg + "" + pub;
+  var sum = 0;
+  for(var b=0;b<12;b++){
+    sum += parseInt(plain[b]) * b
+  }
+  var check = sum%12
+  isbn = EAN + "-" + grp + "-" + reg + "-" + pub +  " " + check
   const genre = faker.random.arrayElement(['Fiction', 'Non-fiction', 'Sci-Fi', 'Romance']);
   const rating = faker.random.number({ min: 1, max: 5 });
   const description = faker.lorem.paragraph();
@@ -37,8 +47,8 @@ for (let i = 0; i < 5000; i++) {
 // Close the connection
 connection.end();
 
-*/
 
+/*
 
 // Generate and insert 300 random data sets
 for (let i = 0; i < 300; i++) {
@@ -55,7 +65,7 @@ for (let i = 0; i < 300; i++) {
     });
   }
   
-  
+  */
   // Close the connection
   connection.end();
 

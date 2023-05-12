@@ -107,7 +107,7 @@ try {
 			<div>
 			  <label for="categorySelect">Choose a category/genre:</label>
 				  <select id="cat" name="categorySelect">
-				  	<option value="none">no category</option>
+				  	<option value="none">no category</option>	
 				    <option value="Romance">Romance</option>
 				    <option value="Non-fiction">Non-fiction</option>
 				    <option value="Fiction">Fiction</option>
