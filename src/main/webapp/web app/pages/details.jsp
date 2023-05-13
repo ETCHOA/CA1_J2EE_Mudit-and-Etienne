@@ -8,6 +8,14 @@
 <title>Details</title>
 </head>
 <%
+boolean logged = false;
+try{
+	logged = (boolean)session.getAttribute("isLoggedIn");
+	//out.print("logged");
+} catch(Exception e){
+	logged = false;
+	//out.print("not logged");
+}
 
 String id = request.getParameter("id");
 String title = "";
@@ -83,9 +91,23 @@ try {
 	<div style="display:flex;flex-direction:row">
 		<h2>Rating :</h2><p style="justify-content:center;font-size:1.4em"><%=rating %></p>
 	</div>
-	<div style="display:flex;flex-direction:row">
-		<h2>Description :</h2><p style="justify-content:center;font-size:1.4em"><%=description %></p>
+	<div style="display:flex;flex-direction:column">
+		<h2 style="padding:5px">Description :</h2><p style="justify-content:center;font-size:1.4em"><%=description %></p>
 	</div>
+	<%
+	if(logged == true){
+		%>
+		<div style="display:flex;flex-direction:row">
+			<form action="changebooks.jsp?id=<%=id %>" method="POST">
+				<input type="submit" name="btnSubmit" value="Update book" style="padding:5px;margin:5px">
+			</form>
+			<form action="deleteBooks.jsp?id=<%=id %>" method="POST">
+				<input type="submit" name="btnSubmit" value="Delete book" style="padding:5px;margin:5px">
+			</form>
+		</div>
+		<% 
+	}
+	%>
 </div>
 
 

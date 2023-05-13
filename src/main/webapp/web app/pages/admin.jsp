@@ -28,9 +28,12 @@ if(email == null || !(status)){
 %>
 <body>
 <%@ include file="projectHeader.html" %>
+<div style="padding:1em">
+	<h1>Admin Mode</h1>
+</div>
 <div style="flex-direction:row;display:flex">
 	<div style="margin:1em">
-		<form action="login.jsp" method="POST">
+		<form action="addbooks.jsp" method="POST">
 			<input style="padding:0.5em" name="create" value="Create books" type="submit"/>
 		</form>
 	</div>
@@ -40,7 +43,7 @@ if(email == null || !(status)){
 		</form>
 	</div>
 	<div style="margin:1em">
-		<form action="login.jsp" method="POST">
+		<form action="search.jsp" method="POST">
 			<input style="padding:0.5em" name="create" value="Update books/Delete books" type="submit"/>
 		</form>
 	</div>
