@@ -8,7 +8,7 @@
 </head>
 <body>
 <%@ include file="projectHeader.html" %>
-	<form action="verifyUser.jsp" method="POST">
+	<form action="../../verifyUserServlet">
 		<div style="display:flex;flex-direction:row;padding:1.5em">
 			<label style="padding:0.5em">Email :</label>
 			<input style="padding:0.5em" name="emailInput" value="" placeholder="Enter email" type="text"/>
