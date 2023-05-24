@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <%
+
 boolean status = false;
 String error = "Invalid session ID / Password cannot be null";
 String email = "";
@@ -21,19 +22,20 @@ if(email == null || !(status)){
 	response.sendRedirect("login.jsp?msg="+error);
 	return;
 }
+
 %>
 <body>
 <div style="padding:1em">
 	<h2>Add Book</h2>
 	<%
-	String msg = request.getParameter("msg");
+	String msg = (String) session.getAttribute("msg");
 	if(msg != null){
 		%><h3><%=msg %></h3><%
 	}
 	%>
 </div>
 <div style="width:50%">
-	<form action="addTable.jsp?type=new" method="POST">
+	<form action="/first_web_project/addBooks" method="POST">
 		<div style="display:flex;flex-direction:row;padding:1.5em">
 			<label style="padding:0.5em">Enter title :</label>
 			<input style="padding:0.5em" name="titleInput" value="" placeholder="Enter title" type="text" required="required"/>
@@ -80,10 +82,17 @@ if(email == null || !(status)){
 			<textarea type="text" name="descInput" style="width:30em;padding:10px;height:10em"></textarea>
 		</div>
 		<div>
-			<input type="submit" name="btnSubmit" value="login" style="padding:5px;margin:5px">
+			<input type="submit" name="btnSubmit" value="Submit" style="padding:5px;margin:5px">
 			<input type="Reset" value="Clear" style="padding:5px;margin:5px">
 		</div>
 	</form>
+	<div style="margin:10px;padding:10px">
+		<a href="admin.jsp">
+			<button style=";background-color:lightblue">
+				<h3>Home</h3>	
+			</button>
+		</a>
+	</div>
 </div>
 </body>
 </html>

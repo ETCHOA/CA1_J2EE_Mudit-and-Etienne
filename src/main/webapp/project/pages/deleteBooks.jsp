@@ -12,7 +12,8 @@ boolean status = false;
 String error = "Invalid session ID / Password cannot be null";
 String email = "";
 
-int resultSet = 0;
+int deleted = 0;
+
 try {	
 	email = (String)session.getAttribute("email");
 	status = (boolean)session.getAttribute("isLoggedIn");
@@ -25,33 +26,15 @@ if(email == null || !(status)){
 	return;
 }
 
-String id = request.getParameter("id");
-try{
-	Class.forName("com.mysql.jdbc.Driver");
-	
-	String connURL = "jdbc:mysql://localhost:3306/bookstore?user=root&password=root&serverTimezone=UTC";
-	
-	Connection connection = DriverManager.getConnection(connURL);
-	
-	Statement statement = connection.createStatement();
-	
-	String sqlStr = "DELETE FROM BOOKS WHERE id=?";
-	
-	PreparedStatement ps = connection.prepareStatement(sqlStr);
-	ps.setString(1,id);
-	
-	resultSet = ps.executeUpdate();
-	connection.close();
-		
-	
-} catch(SQLException e) {
-	out.print(e);
-}
+String deletedStr = request.getParameter("result");
+deleted = Integer.parseInt(deletedStr);
+
+
 
 %>
 <body>
 <%
-if(resultSet == 1){
+if(deleted == 1){
 	%>
 	<div style="padding:2em">
 		<h2>Record successfully deleted!</h2>
@@ -61,7 +44,7 @@ if(resultSet == 1){
 	%>
 	<div style="padding:2em">
 		<h2>Error Deleting record</h2>
-	</div>
+	</div>	
 	<%
 }
 %>

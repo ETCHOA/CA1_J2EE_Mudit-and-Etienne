@@ -6,9 +6,13 @@
 <meta charset="ISO-8859-1">
 <title>Login</title>
 </head>
-<body>
+<%
+String error = (String) session.getAttribute("error");
+
+%>
+<body> 
 <%@ include file="projectHeader.html" %>
-	<form action="../../verifyUserServlet">
+	<form action="/first_web_project/verifyUserServlet">
 		<div style="display:flex;flex-direction:row;padding:1.5em">
 			<label style="padding:0.5em">Email :</label>
 			<input style="padding:0.5em" name="emailInput" value="" placeholder="Enter email" type="text"/>
@@ -22,6 +26,15 @@
 			<input type="Reset" value="Clear" style="padding:5px;margin:5px">
 		</div>
 	</form>
+	<%
+	if(!(error == null || error == "")){
+		%>
+		<div>
+		<p><%=error %></p>
+		</div>
+		<%
+	}
+	%>
 <%@ include file="projectFooter.html" %>
 </body>
 </html>

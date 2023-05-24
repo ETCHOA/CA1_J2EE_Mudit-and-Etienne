@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*,java.util.ArrayList" %>
+<%@ page import="dataBaseJava.databaseCodes"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,83 +16,17 @@ if(catStr == null){
 	catStr = "none";
 }
 
-// ArrrayLists of data
-ArrayList<Integer> ids = new ArrayList<>();
-ArrayList<String> titles = new ArrayList<>();
-ArrayList<Double> prices = new ArrayList<>();
-ArrayList<Double> ratings = new ArrayList<>();
-ArrayList<String> genres = new ArrayList<>();
 
 
+Object[] arrayListObj = databaseCodes.getRecords(searchStr, catStr);
 
-try {
-	
-	// mySQL Database 
-	
-	Class.forName("com.mysql.jdbc.Driver");
-	
-	String connURL = "jdbc:mysql://localhost:3306/bookstore?user=root&password=root&serverTimezone=UTC";
-	
-	Connection connection = DriverManager.getConnection(connURL);
-	
-	Statement statement = connection.createStatement();
-	
-	// SQL statement (take first 200 datasets)
-	String sqlStr = "";
-	if(searchStr == null && catStr.equals("none")){
-		sqlStr = "SELECT id,title,price,rating,genre FROM books limit 0, 199";
-	} else 	{
-		if(catStr.equals("")){
-			sqlStr = "SELECT id,title,price,rating,genre FROM books limit 0, 199";
-		}else if(catStr.equals("none")){
-			sqlStr = "SELECT id,title,price,rating,genre FROM books where title LIKE ? LIMIT 0,199";
-		} else if (searchStr == null) {
-			sqlStr = "SELECT id,title,price,rating,genre FROM books where genre=? LIMIT 0,199";
-		} else {
-			sqlStr = "SELECT id,title,price,rating,genre FROM books where title LIKE ? and genre=? LIMIT 0,199 ";
-		}
-				
-	}
-	
-	PreparedStatement ps = connection.prepareStatement(sqlStr);
-	
-	
-	if(!(searchStr == null && (catStr.equals("none")))){
-		if(!(catStr.equals(""))){
-			if(catStr.equals("none")){
-				ps.setString(1,"%" + searchStr + "%");
-			}else if(searchStr == null){
-				ps.setString(1,catStr);
-			} else {
-				ps.setString(1,"%" + searchStr + "%");
-				ps.setString(2,catStr);
-			}
-		}
-	
-	}
+//ArrrayLists of data
+ArrayList<Integer> ids = (ArrayList<Integer>) arrayListObj[0];
+ArrayList<String> titles = (ArrayList<String>) arrayListObj[1];
+ArrayList<Double> prices = (ArrayList<Double>) arrayListObj[2];
+ArrayList<Double> ratings = (ArrayList<Double>) arrayListObj[3];
+ArrayList<String> genres = (ArrayList<String>) arrayListObj[4];
 
-	
-	
-	ResultSet resultSet = ps.executeQuery();
-
-	while(resultSet.next()){
-		Integer id = resultSet.getInt("id");
-		String title = resultSet.getString("title");
-		double price = resultSet.getDouble("price");
-		double rating = resultSet.getDouble("rating");
-		String genre = resultSet.getString("genre");
-
-		ids.add(id);
-		titles.add(title);
-		prices.add(price);
-		ratings.add(rating);
-		genres.add(genre);
-	}
-
-	connection.close();
-}catch(SQLException e){
-	
-}
 %>
 <body>
 <%@ include file="projectHeader.html" %>

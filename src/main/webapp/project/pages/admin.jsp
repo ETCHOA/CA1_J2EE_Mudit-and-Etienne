@@ -33,17 +33,17 @@ if(email == null || !(status)){
 </div>
 <div style="flex-direction:row;display:flex">
 	<div style="margin:1em">
-		<form action="addbooks.jsp" method="POST">
+		<form action="project/pages/addbooks.jsp" method="POST">
 			<input style="padding:0.5em" name="create" value="Create books" type="submit"/>
 		</form>
 	</div>
 	<div style="margin:1em">
-		<form action="login.jsp" method="POST">
+		<form action="project/pages/login.jsp" method="POST">
 			<input style="padding:0.5em" name="create" value="Read" type="submit"/>
 		</form>
 	</div>
 	<div style="margin:1em">
-		<form action="search.jsp" method="POST">
+		<form action="project/pages/search.jsp" method="POST">
 			<input style="padding:0.5em" name="create" value="Update books/Delete books" type="submit"/>
 		</form>
 	</div>

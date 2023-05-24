@@ -101,10 +101,17 @@ try {
 			<form action="changebooks.jsp?id=<%=id %>" method="POST">
 				<input type="submit" name="btnSubmit" value="Update book" style="padding:5px;margin:5px">
 			</form>
-			<form action="deleteBooks.jsp?id=<%=id %>" method="POST">
+			<form action="/first_web_project/deleteBooks?id=<%=id %>" method="POST">
 				<input type="submit" name="btnSubmit" value="Delete book" style="padding:5px;margin:5px">
 			</form>
 		</div>
+		<div style="margin:10px;padding:10px">
+		<a href="admin.jsp">
+			<button style=";background-color:lightblue">
+				<h3>Home</h3>	
+			</button>
+		</a>
+	</div>
 		<% 
 	}
 	%>

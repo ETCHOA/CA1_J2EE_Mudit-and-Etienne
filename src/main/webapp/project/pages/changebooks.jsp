@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@ page import="java.sql.*,java.util.ArrayList" %>
+    <%@ page import="java.sql.*,java.util.ArrayList,dataBaseJava.databaseCodes" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +8,8 @@
 <title>Insert title here</title>
 </head>
 <%
+
+String id = request.getParameter("id");
 
 boolean status = false;
 String error = "Invalid session ID / Password cannot be null";
@@ -24,65 +26,33 @@ if(email == null || !(status)){
 	return;
 }
 
-String id = request.getParameter("id");
 
+Object[] book = databaseCodes.getBooks(id);
 
-String title = "";
-String author = "";
-String publisher = "";
-String isbn = "";
-String category = "";
-String desc = "";
-String date = "";
-double price = 0;
-Integer quantity = 0;
-double rating = 0;
+String title = (String) book[0];
+String author = (String) book[1];
+String publisher = (String) book[4];
+String isbn = (String) book[6];
+String category = (String) book[7];
+String desc = (String) book[9];
+String date = (String) book[5];
+double price = (Double) book[2];
+Integer quantity = (int) book[3];
+double rating = (Double) book[8];
 
-try {
-	Class.forName("com.mysql.jdbc.Driver");
-	
-	String connURL = "jdbc:mysql://localhost:3306/bookstore?user=root&password=root&serverTimezone=UTC";
-	
-	Connection connection = DriverManager.getConnection(connURL);
-	
-	Statement statement = connection.createStatement();
-	
-	String sqlStr = "SELECT * FROM BOOKS WHERE id=?";
-	
-	PreparedStatement ps = connection.prepareStatement(sqlStr);
-	ps.setString(1,id);
-	
-	ResultSet resultSet = ps.executeQuery();
-	
-	while (resultSet.next()){
-		title = resultSet.getString("title");
-		author = resultSet.getString("author");
-		price = resultSet.getDouble("price");
-		quantity = resultSet.getInt("quantity");
-		publisher = resultSet.getString("publisher");
-		date = resultSet.getString("publication_date");
-		isbn = resultSet.getString("isbn");
-		category = resultSet.getString("genre");
-		rating = resultSet.getDouble("rating");
-		desc = resultSet.getString("description");
-	}
-
-}catch(SQLException e){
-	out.print(e);
-}
 %>
 <body>
 <div style="padding:1em">
 	<h2>Update Book</h2>
 	<%
-	String msg = request.getParameter("msg");
+	String msg = (String) session.getAttribute("updated");
 	if(msg != null){
 		%><h3><%=msg %></h3><%
 	}
 	%>
 </div>
 <div style="width:50%">
-	<form action="addTable.jsp?id=<%=id %>&type=update" method="POST">
+	<form action="/first_web_project/updateBooks?id=<%=id %>&type=update" method="POST">
 		<div style="display:flex;flex-direction:row;padding:1.5em">
 			<label style="padding:0.5em">Enter title :</label>
 			<input style="padding:0.5em" name="titleInput" value="<%=title %>" placeholder="Enter title" type="text" required="required"/>
@@ -155,6 +125,13 @@ try {
 			<input type="Reset" value="Clear" style="padding:5px;margin:5px">
 		</div>
 	</form>
+		<div style="margin:10px;padding:10px">
+		<a href="admin.jsp">
+			<button style=";background-color:lightblue">
+				<h3>Home</h3>	
+			</button>
+		</a>
+	</div>
 </div>
 </body>
 </html>

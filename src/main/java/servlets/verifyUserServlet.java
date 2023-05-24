@@ -1,5 +1,6 @@
 package servlets;
 import javax.servlet.*;
+import dataBaseJava.databaseCodes;
 import javax.servlet.http.*;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.io.*;
 
 
 /**
- * Servlet implementation class VerifyUserServlet
+ * Servlet implementation class verifyUserServlet
  */
 @WebServlet("/verifyUserServlet")
 public class verifyUserServlet extends HttpServlet {
@@ -30,61 +31,44 @@ public class verifyUserServlet extends HttpServlet {
 			String error = "Invalid session ID / Password cannot be null";
 			String email = request.getParameter("emailInput");
 			String password = request.getParameter("passwordInput");
+			HttpSession session=request.getSession();
+			session.removeAttribute("error");
 			boolean check = false;
 
 			if(email == null || password == null || email == "" || password == ""){
 				error = "password and email cannot be null";
-				response.sendRedirect("project/pages/login.jsp?msg="+error);
+				session.setAttribute("error", error);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/project/pages/login.jsp");
+				dispatcher.forward(request,response);
 				return;
-			}
-
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				
-				String connURL = "jdbc:mysql://localhost:3306/bookstore?user=root&password=root&serverTimezone=UTC";
-				
-				Connection connection = DriverManager.getConnection(connURL);
-				
-				Statement statement = connection.createStatement();
-				
-				String sqlStr = "SELECT * FROM users where email=? and password=?;";
-				
-				PreparedStatement ps = connection.prepareStatement(sqlStr);
-				ps.setString(1, email);
-				ps.setString(2, password);
-				
-				ResultSet resultSet = ps.executeQuery();
-
-				String emailReturn = "";
-				String passwordReturn = "";
-				
-				while(resultSet.next()){
-					check = true;
-				}
-
-				connection.close();
-
-			} catch (SQLException e){
-				out.println(e);
-			}
-			HttpSession session=request.getSession();  
-
-			if(check == false){
-				error = "Wrong password / user email does not exist";	
-				response.sendRedirect("project/pages/login.jsp?error="+error);
 			} else {
-				session.setAttribute("email",email);
-				session.setAttribute("isLoggedIn", true);
-				String sessionId = session.getId();
-				String encodedURL = response.encodeURL("project/pages/admin.jsp;jsessionid="+sessionId);
-				response.sendRedirect(encodedURL);
+				Object[] obj = databaseCodes.verifyUser(email,password);
+				check = (Boolean) obj[0];
+				error = (String) obj[1];
+				String emailStr = (String) obj[2];
+				if(error == "none") {
+					session.setAttribute("isLoggedIn", check);
+					session.setAttribute("email", emailStr);
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/project/pages/admin.jsp");
+					dispatcher.forward(request,response);
+					return;
+				} else {
+					session.setAttribute("error", error);
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/project/pages/login.jsp");
+					dispatcher.forward(request,response);
+					return;
+				}
 			}
+		
+		}catch(Exception e) {
 			
-		} catch(Exception e) {
-			out.println(e);
 		}
 		
 	}
-	
-	
+		
+	protected void doPost (HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException{
+		doGet(request,response);
+	}
+		
 }
