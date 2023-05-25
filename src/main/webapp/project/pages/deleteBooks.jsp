@@ -14,15 +14,16 @@ String email = "";
 
 int deleted = 0;
 
-try {	
+try {
 	email = (String)session.getAttribute("email");
 	status = (boolean)session.getAttribute("isLoggedIn");
 }catch(Exception e){
-	response.sendRedirect("login.jsp?msg="+error);
+	session.setAttribute("error", error);
+	response.sendRedirect("login.jsp");
 	return;
 }
-if(email == null || !(status)){ 
-	response.sendRedirect("login.jsp?msg="+error);
+if(email == null || !(status)){
+	response.sendRedirect("login.jsp");
 	return;
 }
 
