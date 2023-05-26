@@ -66,6 +66,12 @@ try {
 %>
 <body>
 <%@ include file="projectHeader.html" %>
+<%
+String cartmsg = (String) session.getAttribute("cart");
+if (!(cartmsg == null)){
+	%><%=cartmsg%><%
+}
+%>
 <div>
 	<div style="display:flex;flex-direction:row">
 		<h2>Title :</h2><p style="justify-content:center;font-size:1.4em"><%=title %></p>
@@ -94,6 +100,15 @@ try {
 	<div style="display:flex;flex-direction:column">
 		<h2 style="padding:5px">Description :</h2><p style="justify-content:center;font-size:1.4em"><%=description %></p>
 	</div>
+	<div>
+		<form action="/first_web_project/addToCart">
+			<input type="hidden" name="cart" value="<%=id%>"/>
+			<input type="submit" name="addCart" value="Add Item to Cart" style="padding:5px;margin:5px"/>
+		</form>
+	</div>
+	<form action="search.jsp">
+			<input type="submit" name="back" value="back" style="padding:5px;margin:5px"/>
+		</form>
 	<%
 	if(logged == true){
 		%>

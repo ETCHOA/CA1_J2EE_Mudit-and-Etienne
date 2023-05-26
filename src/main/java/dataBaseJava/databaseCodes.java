@@ -74,7 +74,7 @@ public class databaseCodes {
 	// get page objects functions
 	
 	
-	public static Object[] getRecords(String searchStr,String catStr){
+	public static Object[] getRecords(String searchStr,String catStr,int low,int high){
 		// ArrrayLists of data
 		ArrayList<Integer> ids = new ArrayList<>();
 		ArrayList<String> titles = new ArrayList<>();
@@ -98,7 +98,7 @@ public class databaseCodes {
 			// SQL statement (take first 200 datasets)
 			String sqlStr = "";
 			if(searchStr == null && catStr.equals("none")){
-				sqlStr = "SELECT id,title,price,rating,genre FROM books limit 0, 199";
+				sqlStr = "SELECT id,title,price,rating,genre FROM books limit ?, ?";
 			} else 	{
 				if(catStr.equals("")){
 					sqlStr = "SELECT id,title,price,rating,genre FROM books limit 0, 199";
@@ -127,6 +127,9 @@ public class databaseCodes {
 					}
 				}
 			
+			} else {
+				ps.setInt(1, low);
+				ps.setInt(2, high);
 			}
 			
 			// Execute Query

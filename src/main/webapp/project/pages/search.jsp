@@ -16,9 +16,24 @@ if(catStr == null){
 	catStr = "none";
 }
 
+String numStr = request.getParameter("num");
+Integer num = 0;
+Integer limitLow = 0;
+Integer limitHigh = 199;
+if(numStr == null || numStr == "0"){
+	num = 0;
+} else {
+	try{
+		num = Integer.parseInt(numStr);
+		limitLow += (199*num);
+		limitHigh += (199*num);
+	} catch(Exception e){
+
+	}
+}
 
 
-Object[] arrayListObj = databaseCodes.getRecords(searchStr, catStr);
+Object[] arrayListObj = databaseCodes.getRecords(searchStr, catStr,limitLow,limitHigh);
 
 //ArrrayLists of data
 ArrayList<Integer> ids = (ArrayList<Integer>) arrayListObj[0];
@@ -51,7 +66,7 @@ ArrayList<String> genres = (ArrayList<String>) arrayListObj[4];
 			</div>
 		</div>
 		<div style="flex-direction:row;display: flex;padding:5px">
-			<input type="submit" name="btnSubmit" value="login" style="padding:5px;margin:5px">
+			<input type="submit" name="btnSubmit" value="Search" style="padding:5px;margin:5px">
 			<input type="Reset" value="Clear" style="padding:5px;margin:5px">
 		</div>
 	</form>
@@ -101,7 +116,25 @@ ArrayList<String> genres = (ArrayList<String>) arrayListObj[4];
 	if(titles.size()==0){
 		%><p style="font-size:1.1em;text-align:center;align-items:center">No matching results found</p><%
 	} else {
-		%><p style="font-size:1.1em;text-align:center;align-items:center">End of results</p><%
+		%>
+		<div style="display:flex;flex-direction-row;width:100%;padding-top:10px">
+			<div style="width:40%;display:flex;justify-content:center;text-align:center">
+				<form action="search.jsp">
+				<input type="hidden" value="<%=(num-1)%>" name="num">
+					<input type="<%if(num == 0){ %>hidden<%}else {%>submit<%} %>" name="back" value="back" style="padding:5px;margin:5px"/>
+				</form>	
+			</div>
+			<div style="width:20%;display:flex;justify-content:center;text-align:center">
+			<p style="font-size:1.1em;text-align:center;align-items:center;">End of results</p>
+			</div>
+			<div style="width:40%;display:flex;justify-content:center;text-align:center">
+				<form action="search.jsp">
+					<input type="hidden" value="<%=(num+1)%>" name="num">
+					<input type="submit" name="back" value="forward" style="padding:5px;margin:5px"/>
+				</form>
+			</div>
+		</div>
+		<%
 	}
 	%>
 </div>
